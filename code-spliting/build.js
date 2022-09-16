@@ -29,6 +29,6 @@ function f2() {
 	})
 }
 
-f2().run((err, stat) => {
+f1().run((err, stat) => {
 	console.log(stat.toJson())
 })

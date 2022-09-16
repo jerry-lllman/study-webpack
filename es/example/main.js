@@ -17,7 +17,7 @@
 			// 默认导出 export default
 			const __WEBPACK_DEFAULT_EXPORT__ = (sum);
 
-			const name = 'sum'
+			let name = 'sum'
 		})
 	]);
 
