@@ -1,16 +1,16 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[548],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[241],{
 
-/***/ 548:
+/***/ 241:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const sum = (...args) => args.reduce((x, y) => x + y, 0)
+const add = (x, y) => x + y
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sum);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (add);
 
 /***/ })
 

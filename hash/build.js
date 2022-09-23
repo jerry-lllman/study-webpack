@@ -1,27 +1,6 @@
 const webpack = require('webpack')
 const path = require('path')
-const MiniCssExtractPlugin  =  require("mini-css-extract-plugin")
-
-// 通过配置 deterministic，可获得确定的 moduleId 与 chunkId
-// 从而优化代码修改导致大部分chunkId的变更，导致依赖该chunkId 的文件的hash值也被修改使得webpack需要重新构建文件，及浏览器缓存失效的问题
-function f1() {
-  return webpack({
-    entry: '.src/index.js',
-    mode: 'none',
-    output: {
-      filename: '[name].[contenthash].js',
-      chunkFilename: 'chunk.[name].[id].[contenthash].js',
-      path: path.resolve(__dirname, 'dist/deterministic')
-    },
-    optimization: { // 设置为 deterministic(确定的) 生产环境下默认设为 deterministic
-      moduleIds: 'deterministic', // 能够确定每个模块 的 id 
-      chunkIds: 'deterministic' // 能够确定每个chunk 的 id
-    }
-  })
-}
-
-
-// 当 runtimeChunk 设置为 true 时，将单独把 webpack 的运行时给独立出来
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 const moduleConfig = {
   rules: [
@@ -40,7 +19,7 @@ const moduleConfig = {
   ]
 }
 
-function f2() {
+function f1() {
   return webpack([
     {
       entry: './src/index.js',
@@ -52,10 +31,10 @@ function f2() {
         clean: true
       },
       plugins: [
-				new MiniCssExtractPlugin({
-					// css 输出添加hash
-					filename: '[name].[fullhash].css'
-				})
+        new MiniCssExtractPlugin({
+          // css 输出添加hash
+          filename: '[name].[fullhash].css'
+        })
       ]
     },
     {
@@ -68,10 +47,10 @@ function f2() {
         clean: true
       },
       plugins: [
-				new MiniCssExtractPlugin({
-					// css 输出添加hash
-					filename: '[name].[chunkhash].css'
-				})
+        new MiniCssExtractPlugin({
+          // css 输出添加hash
+          filename: '[name].[chunkhash].css'
+        })
       ]
     },
     {
@@ -87,21 +66,57 @@ function f2() {
         chunkFormat: 'module'
       },
       plugins: [
-				new MiniCssExtractPlugin({
-					// css 输出添加hash
-					filename: '[name].[contenthash].css'
-				})
+        new MiniCssExtractPlugin({
+          // css 输出添加hash
+          filename: '[name].[contenthash].css'
+        })
       ]
-      // optimization: {
-      //   moduleIds: 'deterministic',
-      //   chunkIds: 'deterministic',
-      //   runtimeChunk: true
-      // }
+
     },
   ])
 }
 
 
-f2().run(() => {
+// 通过配置 deterministic，可获得确定的 moduleId 与 chunkId
+// 从而优化代码修改导致大部分chunkId的变更，导致依赖该chunkId 的文件的hash值也被修改使得webpack需要重新构建文件，及浏览器缓存失效的问题
+function f2() {
+  return webpack({
+    entry: './src/index.js',
+    mode: 'none',
+    output: {
+      filename: '[name].[contenthash].js',
+      chunkFilename: 'chunk.[name].[id].[contenthash].js',
+      path: path.resolve(__dirname, 'dist/deterministic'),
+      clean: true
+    },
+    optimization: { // 设置为 deterministic(确定的) 生产环境下默认设为 deterministic
+      moduleIds: 'deterministic', // 能够确定每个模块 的 id 
+      chunkIds: 'deterministic' // 能够确定每个chunk 的 id
+    }
+  })
+}
+
+
+// 当 runtimeChunk 设置为 true 时，将单独把 webpack 的运行时给独立出来
+function f3() {
+  return webpack({
+    entry: './src/index.js',
+    mode: 'none',
+    output: {
+      filename: '[name].[contenthash].js',
+      chunkFilename: 'chunk.[name].[id].[contenthash].js',
+      path: path.resolve(__dirname, 'dist/runtimeChunk'),
+      clean: true
+    },
+    optimization: {
+      moduleIds: 'deterministic',
+      chunkIds: 'deterministic',
+      runtimeChunk: true
+    }
+  })
+}
+
+
+f3().run(() => {
   console.log('✅')
 })
